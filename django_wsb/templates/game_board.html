@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gra w kółko i krzyżyk</title>
+    <link rel="stylesheet" type="text/css" href="/static/game_styles.css">
+</head>
+<body>
+    <h1>Gra w kółko i krzyżyk</h1>
+    <div class="board">
+        <div class="cell" data-cell="0"></div>
+        <div class="cell" data-cell="1"></div>
+        <div class="cell" data-cell="2"></div>
+        <div class="cell" data-cell="3"></div>
+        <div class="cell" data-cell="4"></div>
+        <div class="cell" data-cell="5"></div>
+        <div class="cell" data-cell="6"></div>
+        <div class="cell" data-cell="7"></div>
+        <div class="cell" data-cell="8"></div>
+    </div>
+    <div id="gameResult" class="winner"></div> 
+    <button id="restartBtn" class="button">Restart</button>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var currentPlayer = 'red'; 
+    var gameEnded = false; 
+
+    function checkWinner() {
+        var lines = [
+            [0, 1, 2], 
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ];
+
+        for (var i = 0; i < lines.length; i++) {
+            var [a, b, c] = lines[i];
+            if (document.querySelector(`[data-cell="${a}"]`).classList.contains(currentPlayer) &&
+                document.querySelector(`[data-cell="${b}"]`).classList.contains(currentPlayer) &&
+                document.querySelector(`[data-cell="${c}"]`).classList.contains(currentPlayer)) {
+                return currentPlayer.toUpperCase(); 
+            }
+        }
+        return null; 
+    }
+
+    function restartGame() {
+        var cells = document.querySelectorAll('.cell');
+        cells.forEach(function(cell) {
+            cell.style.backgroundColor = '#fff';
+            cell.classList.remove('red', 'blue'); 
+            cell.textContent = ''; 
+        });
+        gameEnded = false;
+        document.getElementById('gameResult').textContent = ''; 
+    }
+
+    document.getElementById('restartBtn').addEventListener('click', restartGame);
+
+    var cells = document.querySelectorAll('.cell');
+
+    cells.forEach(function(cell) {
+        cell.addEventListener('click', function() {
+            if (gameEnded) {
+                return;
+            }
+            if (!this.classList.contains('red') && !this.classList.contains('blue')) {
+                this.style.backgroundColor = currentPlayer;
+                this.classList.add(currentPlayer);
+                this.textContent = currentPlayer === 'red' ? 'O' : 'X'; 
+
+                var winner = checkWinner();
+                if (winner) {
+                    gameEnded = true;
+                    document.getElementById('gameResult').textContent = `${winner} wygrywa!`;
+                } else {
+                    currentPlayer = currentPlayer === 'red' ? 'blue' : 'red';
+                }
+            }
+        });
+    });
+});
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Strona główna</title>
+    <link rel="stylesheet" type="text/css" href="/static/styles.css">
+</head>
+<body>
+    <div style="justify-content: center; align-items: center;"> 
+        <h1 class="h1">Gra w kółko i krzyżyk</h1>
+    </div>
+    <form action="{% url 'game_board' %}" method="get">
+            <button type="submit" class="button">Start Game</button>
+    </form>
+</body>
+</html>
